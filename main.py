@@ -4,17 +4,14 @@ from telegram import Update
 from telegram.ext import ApplicationBuilder, ContextTypes, CommandHandler, MessageHandler, filters
 from groq import Groq
 
-# Налаштування логування
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     level=logging.INFO
 )
 
-# Отримання ключів із змінних оточення
 TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN")
 GROQ_API_KEY = os.environ.get("GROQ_API_KEY")
 
-# Ініціалізація клієнта Groq
 groq_client = Groq(api_key=GROQ_API_KEY)
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -30,8 +27,8 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         reply_text = response.choices[0].message.content
         await update.message.reply_text(reply_text)
     except Exception as e:
-        logging.error(f"Error: {e}")
-        await update.message.reply_text("Виникла помилка при обробці запиту.")
+        logging.error(f"Groq API Error: {e}")
+        await update.message.reply_text(f"Помилка Groq: {e}")
 
 if __name__ == '__main__':
     application = ApplicationBuilder().token(TELEGRAM_BOT_TOKEN).build()
