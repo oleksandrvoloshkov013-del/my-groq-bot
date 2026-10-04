@@ -33,7 +33,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         logging.error(f"Error: {e}")
         await update.message.reply_text("Виникла помилка при обробці запиту.")
 
-if name == 'main':
+if __name__ == '__main__':
     application = ApplicationBuilder().token(TELEGRAM_BOT_TOKEN).build()
     
     start_handler = CommandHandler('start', start)
