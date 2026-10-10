@@ -24,19 +24,19 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     user_text = message.text
 
-    try:
+   try:
         response = groq_client.chat.completions.create(
             model="openai/gpt-oss-20b",
             messages=[
                 {
                     "role": "system", 
-                    "content": "Ти — Telegram-асистент. Відповідай чітко. Використовуй тільки стандартне виділення: жирний текст, *курсив*, ~перекреслений~. Категорично заборонено використовувати таблиці (символи |) та HTML-теги (<br>)."
+                    "content": "Ти — корисний Telegram-асистент. Відповідай тією мовою, якою до тебе звертається користувач. Для виділення тексту використовуй ТІЛЬКИ HTML-теги: <b>жирний</b>, <i>курсив</i>, <code>код</code>. Категорично заборонено використовувати Markdown (зірочки **, тильди ~), таблиці (символи |) та HTML-теги <br>."
                 },
                 {"role": "user", "content": user_text}
             ]
         )
         reply_text = response.choices[0].message.content
-        await message.reply_text(reply_text[:4000], parse_mode='Markdown')
+        await message.reply_text(reply_text[:4000], parse_mode='HTML')
 
     except Exception as e:
         logging.error(f"Groq API Error: {e}")
