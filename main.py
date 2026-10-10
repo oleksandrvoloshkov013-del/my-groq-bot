@@ -30,13 +30,13 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
             messages=[{"role": "user", "content": user_text}]
         )
         reply_text = response.choices[0].message.content
-        await message.reply_text(reply_text[:4000])
+        await message.reply_text(reply_text[:4000], parse_mode='Markdown')
 
     except Exception as e:
         logging.error(f"Groq API Error: {e}")
         await message.reply_text(f"Помилка Groq: {e}")
 
-if __name == '__main__':
+if __name__ == '__main__':
     application = ApplicationBuilder().token(TELEGRAM_BOT_TOKEN).build()
 
     application.add_handler(CommandHandler("start", start))
