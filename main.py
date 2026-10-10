@@ -27,7 +27,13 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     try:
         response = groq_client.chat.completions.create(
             model="openai/gpt-oss-20b",
-            messages=[{"role": "user", "content": user_text}]
+            messages=[
+                {
+                    "role": "system", 
+                    "content": "Ти — Telegram-асистент. Відповідай чітко. Використовуй тільки стандартне виділення: жирний текст, *курсив*, ~перекреслений~. Категорично заборонено використовувати таблиці (символи |) та HTML-теги (<br>)."
+                },
+                {"role": "user", "content": user_text}
+            ]
         )
         reply_text = response.choices[0].message.content
         await message.reply_text(reply_text[:4000], parse_mode='Markdown')
